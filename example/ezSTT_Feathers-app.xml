@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8" ?>
+
+<application xmlns="http://ns.adobe.com/air/application/26.0">
+
+    <id>com.fabricemontfort.ezSTT-Feathers</id>
+
+    <filename>ezSTT Feathers</filename>
+
+    <name>ezSTT Feathers</name>
+
+    <versionNumber>1.0.0</versionNumber>
+
+    <!-- IMPORTANT BEGIN -->
+    
+    <extensions>
+        <extensionID>com.fabricemontfort.air.ezSTT</extensionID>
+    </extensions>
+
+    <!-- IMPORTANT END -->
+
+    <initialWindow>
+        <content>SWF file name is set automatically at compile time</content>
+
+        <visible>true</visible>
+
+        <autoOrients>true</autoOrients>
+
+        <fullScreen>false</fullScreen>
+
+        <renderMode>direct</renderMode>
+
+        <depthAndStencil>true</depthAndStencil>
+    </initialWindow>
+
+    <supportedLanguages>en de cs es fr it ja ko nl pl pt ru sv tr zh</supportedLanguages>
+
+    <!--<icon>
+        <image16x16></image16x16>
+        <image29x29></image29x29>
+        <image32x32></image32x32>
+        <image36x36></image36x36>
+        <image40x40></image40x40>
+        <image48x48></image48x48>
+        <image50x50></image50x50>
+        <image57x57></image57x57>
+        <image58x58></image58x58>
+        <image60x60></image60x60>
+        <image72x72></image72x72>
+        <image76x76></image76x76>
+        <image80x80></image80x80>
+        <image96x96></image96x96>
+        <image100x100></image100x100>
+        <image114x114></image114x114>
+        <image120x120></image120x120>
+        <image128x128></image128x128>
+        <image144x144></image144x144>
+        <image152x152></image152x152>
+        <image512x512></image512x512>
+        <image732x412></image732x412>
+        <image1024x1024></image1024x1024>
+    </icon>-->
+
+    <!-- iOS specific capabilities -->
+    <iPhone>
+        <!-- A list of plist key/value pairs to be added to the application Info.plist -->
+        <InfoAdditions>
+            <![CDATA[
+            <key>UIDeviceFamily</key>
+            <array>
+                <!-- iPhone and iPod touch devices -->
+                <string>1</string>
+                <!-- iPad devices -->
+                <string>2</string>
+            </array>
+
+            <!-- IMPORTANT BEGIN -->
+            <!-- A feature request to translate Permissions Strings for iOS here :  -->
+            <!-- https://tracker.adobe.com/#/view/AIR-4198336 -->
+            <!-- Please vote for it -->
+
+            <key>NSSpeechRecognitionUsageDescription</key>
+			<string>NEED VOICE RECOGNITION</string>
+
+			<key>NSMicrophoneUsageDescription</key>
+			<string>NEED MICROPHONE</string>
+
+			<key>MinimumOSVersion</key>
+        	<string>10.0</string>
+
+            <!-- IMPORTANT END -->
+            ]]>
+        </InfoAdditions>
+
+        <requestedDisplayResolution>high</requestedDisplayResolution>
+    </iPhone>
+
+    <!-- Android specific tags that get passed to AndroidManifest.xml file. -->
+    <android>
+        <manifestAdditions>
+            <![CDATA[
+            <manifest android:installLocation="auto">
+
+                <!-- IMPORTANT BEGIN -->
+    
+                <uses-permission android:name="android.permission.INTERNET"/>
+                <uses-permission android:name="android.permission.RECORD_AUDIO"/>
+
+                <!-- IMPORTANT END -->
+
+            </manifest>
+            ]]>
+            </manifestAdditions>
+    </android>
+
+</application>

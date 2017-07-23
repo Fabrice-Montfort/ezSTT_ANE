@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<f:Application xmlns:f="library://ns.feathersui.com/mxml"
+               xmlns:fx="http://ns.adobe.com/mxml/2009"
+               theme="feathers.themes.MetalWorksMobileTheme">
+
+    <fx:Script>
+        <![CDATA[
+        import com.fabricemontfort.air.ezSTT;
+        import com.fabricemontfort.air.ezstt.STTEvent;
+        import com.fabricemontfort.air.ezstt.languages;
+
+        import starling.events.Event;
+
+        private static const OUCH:String = "Not supported";
+        private static const AUTH:String = "Ask user permissions";
+        private static const START:String = "Start listening";
+        private static const STOP:String = "Stop listening";
+
+        private var stt:ezSTT = ezSTT.instance;
+
+        override protected function initialize():void {
+            super.initialize();
+
+            stt.debug = false;
+
+            if (stt.isSupported()) {
+                if (stt.isAuthorized()) {
+                    stt.addEventListener(STTEvent.PARTIAL, onSTTResult);
+                    stt.addEventListener(STTEvent.FINAL, onSTTResult);
+                    stt.addEventListener(STTEvent.VOL, onSTTVolume);
+                    stt.addEventListener(STTEvent.STOP, onSTTStop);
+                    actionButton.label = START;
+                } else {
+                    stt.addEventListener(STTEvent.AUTH, onAuth);
+                    actionButton.label = AUTH;
+                }
+            } else {
+                actionButton.label = OUCH;
+            }
+        }
+
+        private function onSTTResult(event:STTEvent):void {
+            trace(event.message);
+            resultLabel.text = event.message;
+        }
+
+        private function onSTTVolume(event:STTEvent):void {
+            volumeBar.value = parseInt(event.message);
+        }
+
+        private function onSTTStop(event:STTEvent):void {
+            actionButton.label = START;
+            volumeBar.value = 0;
+        }
+
+        private function onAuth(event:STTEvent):void {
+            trace(event.message);
+            if (stt.isAuthorized()) {
+                stt.removeEventListener(STTEvent.AUTH, onAuth);
+                stt.addEventListener(STTEvent.PARTIAL, onSTTResult);
+                stt.addEventListener(STTEvent.FINAL, onSTTResult);
+                stt.addEventListener(STTEvent.VOL, onSTTVolume);
+                stt.addEventListener(STTEvent.STOP, onSTTStop);
+                actionButton.label = START;
+            }
+        }
+
+        private function actionButton_triggeredHandler(event:Event):void {
+            switch (actionButton.label) {
+                case AUTH: {
+                    stt.askUserAuthorization();
+                    break;
+                }
+                case START: {
+                    stt.start();
+                    actionButton.label = STOP;
+                    break;
+                }
+                case STOP: {
+                    stt.stop();
+                    actionButton.label = START;
+                    break;
+                }
+            }
+        }
+
+        private function langPickerList_changeHandler(event:Event):void {
+            stt.setLanguage(langPickerList.selectedItem.code);
+        }
+
+        private function forceLangTextInput_changeHandler(event:Event):void {
+            stt.forceLanguage(forceLangTextInput.text);
+        }
+
+        ]]>
+    </fx:Script>
+
+    <f:layout>
+        <f:VerticalLayout gap="10"
+                          padding="10"/>
+    </f:layout>
+
+    <fx:Declarations>
+        <f:VerticalLayoutData id="fitScreen"
+                              percentWidth="100"
+                              percentHeight="100"/>
+
+        <f:VerticalLayoutData id="fitWidth"
+                              percentWidth="100"/>
+
+        <f:ListCollection id="langListCollection">
+            <fx:Object label="English"      code="{languages.EN}"/>
+            <fx:Object label="French"       code="{languages.FR}"/>
+            <fx:Object label="German"       code="{languages.DE}"/>
+            <fx:Object label="Italian"      code="{languages.IT}"/>
+            <fx:Object label="Spanish"      code="{languages.ES}"/>
+            <fx:Object label="Chinese"      code="{languages.ZH}"/>
+            <fx:Object label="Japanese"     code="{languages.JA}"/>
+            <fx:Object label="Russian"      code="{languages.RU}"/>
+            <fx:Object label="Korean"       code="{languages.KO}"/>
+            <fx:Object label="Portuguese"   code="{languages.PT}"/>
+            <fx:Object label="Czech"        code="{languages.CS}"/>
+            <fx:Object label="Dutch"        code="{languages.NL}"/>
+            <fx:Object label="Polish"       code="{languages.PL}"/>
+            <fx:Object label="Swedish"      code="{languages.SV}"/>
+            <fx:Object label="Turkish"      code="{languages.TR}"/>
+        </f:ListCollection>
+    </fx:Declarations>
+
+    <f:Label id="resultLabel"
+             wordWrap="true"
+             layoutData="{fitScreen}"/>
+
+    <f:ProgressBar id="volumeBar"
+                   minimum="0"
+                   maximum="12"
+                   layoutData="{fitWidth}"/>
+
+    <f:PickerList id="langPickerList"
+                  change="langPickerList_changeHandler(event)"
+                  focusPadding="20"
+                  dataProvider="{langListCollection}"
+                  layoutData="{fitWidth}"/>
+
+    <f:Label id="forceLangLabel"
+             text="TEST A COUNTRY CODE (AT YOUR OWN RISKS)"
+             layoutData="{fitWidth}"/>
+
+    <f:TextInput id="forceLangTextInput"
+                 padding="20"
+                 change="forceLangTextInput_changeHandler(event)"
+                 layoutData="{fitWidth}"/>
+
+    <f:Button id="actionButton"
+              padding="20"
+              triggered="actionButton_triggeredHandler(event)"
+              layoutData="{fitWidth}"/>
+
+</f:Application>
