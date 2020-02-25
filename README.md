@@ -33,6 +33,8 @@ For a full version without toasts showing "EZSTT DEMO", please visit the product
 
 ## Updates
 
+1.5.0 - Work with AIR 33, iOS 13, Android 64bit - Works well in iOS and Android simulator
+
 1.0.2 - Add Timeout for iOS - Work with AIR 30, iOS 11.3 - Bug resolved for AIR Simulator on Desktop
 
 1.0.1 - Work closer with ezSpeech
